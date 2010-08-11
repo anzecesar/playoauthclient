@@ -60,30 +60,33 @@ public class OAuthClient {
 	 * @return the URL on the provider's site that we should redirect the user
 	 */
 	public String retrieveRequestToken(ICredentials cred, String callbackURL) throws Exception {
-		Logger.info("Consumer key: " + getConsumer(cred).getConsumerKey());
-		Logger.info("Consumer secret: " + getConsumer(cred).getConsumerSecret());
-		Logger.info("Token before request: " + getConsumer(cred).getToken());
+		Logger.debug("Consumer key: " + getConsumer(cred).getConsumerKey());
+		Logger.debug("Consumer secret: " + getConsumer(cred).getConsumerSecret());
+		Logger.debug("Token before request: " + getConsumer(cred).getToken());
 		String authUrl = getProvider().retrieveRequestToken(getConsumer(cred), callbackURL);
-		Logger.info("Token after request: " + getConsumer(cred).getToken());
+		Logger.info("[retrieveRequestToken] Token after request: " + getConsumer(cred).getToken());
 		cred.setToken(consumer.getToken());
 		cred.setSecret(consumer.getTokenSecret());
+		cred.gotRequestToken();
 		return authUrl;
 	}
 
 	/**
 	 * Retrieve the access token, and store it in user.
 	 * to in order to get the token.
-	 * @param user the ICredentials with the request token and secret already set (using retrieveRequestToken).
+	 * @param cred the ICredentials with the request token and secret already set (using retrieveRequestToken).
 	 * The access token and secret will be set these.
 	 * @return the URL on the provider's site that we should redirect the user
 	 * @see retrieveRequestToken
 	 */
-	public void retrieveAccessToken(ICredentials user, String verifier) throws Exception {
-		Logger.info("Token before retrieve: " + getConsumer(user).getToken());
-		Logger.info("Verifier: " + verifier);
-		getProvider().retrieveAccessToken(getConsumer(user), verifier);
-		user.setToken(consumer.getToken());
-		user.setSecret(consumer.getTokenSecret());
+	public void retrieveAccessToken(ICredentials cred, String verifier) throws Exception {
+		Logger.debug("Token before retrieve: " + getConsumer(cred).getToken());
+		Logger.debug("Verifier: " + verifier);
+		getProvider().retrieveAccessToken(getConsumer(cred), verifier);
+		Logger.info("[retrieveAccessToken] Token after request: " + getConsumer(cred).getToken());
+		cred.setToken(consumer.getToken());
+		cred.setSecret(consumer.getTokenSecret());
+		cred.gotAccessToken();
 	}
 
 	// Signing requests

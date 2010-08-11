@@ -9,5 +9,14 @@ public interface ICredentials {
 	public void setSecret(String secret);
 
 	public String getSecret();
+	
+	/**
+	 * Callback, invoked after request token was received.
+	 */
+	public void gotRequestToken();
 
+	/**
+   * Callback, invoked after access token was received.
+   */
+  public void gotAccessToken();
 }
