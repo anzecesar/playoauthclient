@@ -12,8 +12,9 @@ import oauth.signpost.http.HttpRequest;
 import play.libs.WS.WSRequest;
 
 public class WSOAuthConsumer extends AbstractOAuthConsumer {
+  private static final long serialVersionUID = -3719906446611875750L;
 
-	public WSOAuthConsumer(String consumerKey, String consumerSecret) {
+  public WSOAuthConsumer(String consumerKey, String consumerSecret) {
 		super(consumerKey, consumerSecret);
 	}
 
