@@ -8,7 +8,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import oauth.signpost.OAuthProvider;
 import play.Logger;
 import play.libs.WS.WSRequest;
 import play.mvc.results.Redirect;
@@ -51,13 +50,10 @@ public class OAuth2Client implements IOAuthClient {
    */
   public void retrieveAccessToken(ICredentials cred, String verifier, String callback)
       throws Exception {
-    Logger.debug("ACCESS TOKEN");
     
     StringBuilder sb = new StringBuilder(accessURL).append("?code=").append(verifier);
     sb.append("&redirect_uri=").append(callback);
     sb.append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret);
-    
-    //throw new Redirect(sb.toString());
     
     URL url = new URL(sb.toString());
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -69,20 +65,6 @@ public class OAuth2Client implements IOAuthClient {
     Logger.debug("access token %s", token);
     cred.setToken(token);
     cred.gotAccessToken();
-    
-//    StringBuilder sb = new StringBuilder(accessURL).append("?type=client_cred");
-//    sb.append("&client_id=").append(clientId).append("&client_secret=").append(clientSecret);
-//    URL url = new URL(sb.toString());
-//    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//    connection.setDoOutput(false);
-//    connection.setRequestMethod("GET");
-//    connection.connect();
-//    String token = convertStreamToString(connection.getInputStream());
-//    token = token.substring(token.indexOf("=") + 1);
-//    Logger.debug("access token %s", token);
-//    //secret not needed I think :]
-//    cred.setToken(token);
-//    cred.gotAccessToken();
   }
 
   public String sign(ICredentials user, String url) throws Exception {
